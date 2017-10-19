@@ -1,0 +1,5 @@
+- unless action_name == 'show'
+  %button.btn.btn-primary{ type: 'button submit' }
+    Save
+- else
+  = link_to 'Back', questions_path, class: 'btn btn-primary'

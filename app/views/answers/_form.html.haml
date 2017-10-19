@@ -1,0 +1,16 @@
+%hr
+= form_for @answer, html: { role: 'form', class: 'form-horizontal' } do |f|
+  %div.form-group
+    %label.col-sm-2.control-label
+      question_id
+    %div.col-sm-10
+      = f.text_field :question_id, class: 'form-control', value: @answer.question_id
+  %div.form-group
+    %label.col-sm-2.control-label
+      Body
+    %div.col-sm-10
+      = f.text_field :body, class: 'form-control'
+  %div.form-group
+    %div.col-sm-offset-2.col-sm-10
+      = render 'button'
+%hr

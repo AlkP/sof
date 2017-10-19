@@ -1,0 +1,11 @@
+%tr
+  %td
+    = link_to answer.body,
+          answer_path(answer.id)
+  %td
+    = link_to 'Edit',
+        edit_answer_path(answer.id)
+    = link_to 'Delete',
+        answer_path(answer.id),
+        :method => :delete,
+        :data => { :confirm => t('.confirm') }

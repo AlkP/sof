@@ -6,6 +6,11 @@ class AnswersController < ApplicationController
 
   def new
     @answer = Answer.new
+    @answer.question_id = params[:question_id]
+    puts "!"
+    puts params[:question_id]
+    puts "!"
+    puts params.to_json
   end
 
   def edit

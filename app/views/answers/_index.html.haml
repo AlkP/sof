@@ -1,0 +1,9 @@
+= link_to 'New answer',
+            new_question_answer_path(@question),
+            class: 'btn btn-primary'
+%br
+%table.table.table-striped
+  %thead
+    = render 'answers/answer_title'
+  %tbody.tbody-answer
+    = render @answers
