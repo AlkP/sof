@@ -27,6 +27,13 @@ RSpec.describe QuestionsController, type: :controller do
     it 'render show view' do
       expect(response).to render_template :show
     end
+
+    it 'populates an array of answers only for @question' do
+      question2 = create(:question)
+      create_list( :answer, 5, body: 'MyAnswer', question_id: question.id )
+      create_list( :answer, 3, body: 'MyAnswer', question_id: question2.id )
+      expect(assigns(:answers)).to match_array(Answer.first(5))
+    end
   end
 
   describe 'GET #new' do
@@ -75,7 +82,7 @@ RSpec.describe QuestionsController, type: :controller do
 
     context 'with invalid attributes' do
       before { patch :update, params: { id: question, question: { title: 'new title', body: nil } } }
-      it 'dosn\'t change the question' do
+      it 'doesn\'t change the question' do
         question.reload
         expect(question.title).to eq 'MyString'
         expect(question.body).to eq 'MyText'
@@ -100,7 +107,7 @@ RSpec.describe QuestionsController, type: :controller do
     end
 
     context 'with invalid attributes' do
-      it 'dosn\'t save the question' do
+      it 'doesn\'t save the question' do
         expect { post :create, params: { question: attributes_for(:question_invalid) } }.to_not change(Question, :count)
       end
 
