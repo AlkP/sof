@@ -42,7 +42,7 @@ RSpec.describe AnswersController, type: :controller do
 
   describe 'PATCH #update' do
     context ' with valid attributes' do
-      before { patch :update, params: { id: answer, answer: { question_id: question, body: "NewAnswer" } } }
+      before { patch :update, params: { question_id: question, id: answer, answer: { body: "NewAnswer" } } }
 
       it 'assigns the requested answer to @answer' do
         expect(assigns(:answer)).to eq answer
@@ -59,7 +59,7 @@ RSpec.describe AnswersController, type: :controller do
     end
 
     context 'with invalid attributes' do
-      before { patch :update, params: { id: answer, answer: { question_id: question, body: nil } } }
+      before { patch :update, params: { question_id: question, id: answer, answer: { body: nil } } }
 
       it 'doesn\'t change answer' do
         answer.reload
@@ -75,22 +75,22 @@ RSpec.describe AnswersController, type: :controller do
   describe 'POST #create' do
     context 'with valid attributes' do
       it 'save new answer in database' do
-        expect { post :create, params: { answer: { question_id: question, body: 'NewAnswer' } } }.to change(Answer, :count).by(1)
+        expect { post :create, params: { question_id: question, answer: { body: 'NewAnswer' } } }.to change(Answer, :count).by(1)
       end
 
       it 'redirect to question show view' do
-        post :create, params: { answer: { question_id: question, body: 'NewAnswer' } }
+        post :create, params: { question_id: question, answer: { body: 'NewAnswer' } }
         expect(response).to redirect_to question_path(answer.question)
       end
     end
 
     context 'with invalid attributes' do
       it 'doesn\'t save the answer' do
-        expect { post :create, params: { answer: { question_id: question, body: nil } } }.to_not change(Answer, :count)
+        expect { post :create, params: { question_id: question, answer: { body: nil } } }.to_not change(Answer, :count)
       end
 
       it 're-render new view' do
-        post :create, params: { answer: { question_id: question, body: nil } }
+        post :create, params: { question_id: question, answer: { body: nil } }
         expect(response).to render_template :new
       end
     end

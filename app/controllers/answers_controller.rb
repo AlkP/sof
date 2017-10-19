@@ -1,5 +1,6 @@
 class AnswersController < ApplicationController
   before_action :set_answer, only: [:show, :edit, :update, :destroy]
+  after_action :set_question, only: [:new]
 
   def show
   end
@@ -21,6 +22,7 @@ class AnswersController < ApplicationController
 
   def create
     @answer = Answer.new(answer_params)
+    set_question
     if @answer.save
       redirect_to @answer.question
     else
@@ -37,10 +39,14 @@ class AnswersController < ApplicationController
   private
 
   def answer_params
-    params.require(:answer).permit(:body, :question_id)
+    params.require(:answer).permit(:body)
   end
 
   def set_answer
     @answer = Answer.find(params[:id])
+  end
+
+  def set_question
+    @answer.question_id = params[:question_id]
   end
 end
