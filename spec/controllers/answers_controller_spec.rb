@@ -17,7 +17,7 @@ RSpec.describe AnswersController, type: :controller do
   end
 
   describe 'GET #new' do
-    before { get :new, params: { question_id: question.id } }
+    before { get :new, params: { question_id: question } }
 
     it 'assigns a new answer to @answer' do
       expect(assigns(:answer)).to be_a_new(Answer)
@@ -75,7 +75,7 @@ RSpec.describe AnswersController, type: :controller do
   describe 'POST #create' do
     context 'with valid attributes' do
       it 'save new answer in database' do
-        expect { post :create, params: { question_id: question, answer: { body: 'NewAnswer' } } }.to change(Answer, :count).by(1)
+        expect { post :create, params: { question_id: question, answer: { body: 'NewAnswer' } } }.to change(question.answers, :count).by(1)
       end
 
       it 'redirect to question show view' do
@@ -86,7 +86,7 @@ RSpec.describe AnswersController, type: :controller do
 
     context 'with invalid attributes' do
       it 'doesn\'t save the answer' do
-        expect { post :create, params: { question_id: question, answer: { body: nil } } }.to_not change(Answer, :count)
+        expect { post :create, params: { question_id: question, answer: { body: nil } } }.to_not change(question.answers, :count)
       end
 
       it 're-render new view' do
@@ -99,7 +99,7 @@ RSpec.describe AnswersController, type: :controller do
   describe 'DELETE #destroy' do
     it 'delete answer' do
       answer
-      expect { delete :destroy, params: { id: answer} }.to change(Answer, :count).by(-1)
+      expect { delete :destroy, params: { id: answer} }.to change(question.answers, :count).by(-1)
     end
 
     it 'redirect to show question'do
