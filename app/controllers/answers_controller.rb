@@ -1,12 +1,12 @@
 class AnswersController < ApplicationController
   before_action :set_answer, only: [:show, :edit, :update, :destroy]
-  after_action :set_question, only: [:new]
+  before_action :set_question, only: [:new, :create]
 
   def show
   end
 
   def new
-    @answer = Answer.new
+    @answer = @question.answers.new
   end
 
   def edit
@@ -21,8 +21,7 @@ class AnswersController < ApplicationController
   end
 
   def create
-    @answer = Answer.new(answer_params)
-    set_question
+    @answer = @question.answers.new(answer_params)
     if @answer.save
       redirect_to @answer.question
     else
@@ -47,6 +46,6 @@ class AnswersController < ApplicationController
   end
 
   def set_question
-    @answer.question_id = params[:question_id]
+    @question = Question.find(params[:question_id])
   end
 end
