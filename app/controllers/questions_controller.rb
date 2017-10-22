@@ -1,5 +1,7 @@
 class QuestionsController < ApplicationController
-  before_action :set_question, only: [:show, :edit, :update, :destroy]
+  before_action :authenticate_user!, except: [ :index, :show ]
+  before_action :set_question, only: [:show]
+  before_action :protected_set_question, only: [:edit, :update, :destroy]
 
   def index
     @questions = Question.all.page(params[:page])
@@ -17,8 +19,9 @@ class QuestionsController < ApplicationController
   end
 
   def create
-    @question = Question.new(question_params)
+    @question = current_user.questions.new(question_params)
     if @question.save
+      flash[:notice] = 'Your question successfully created.'
       redirect_to @question
     else
       render :new
@@ -35,6 +38,7 @@ class QuestionsController < ApplicationController
 
   def destroy
     @question.destroy
+    flash[:notice] = 'Your question successfully destroyed.'
     redirect_to questions_path
   end
 
@@ -46,5 +50,9 @@ class QuestionsController < ApplicationController
 
   def set_question
     @question = Question.find(params[:id])
+  end
+
+  def protected_set_question
+    @question = current_user.questions.find(params[:id])
   end
 end

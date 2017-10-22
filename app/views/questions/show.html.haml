@@ -1,0 +1,8 @@
+%h3
+  Question: '#{@question.title}'
+
+- if current_user == @question.user
+  = link_to 'Edit Question', edit_question_path(@question)
+
+- if current_user == @question.user
+  = link_to 'Destroy Question', question_path(@question), :method => :delete

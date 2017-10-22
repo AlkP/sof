@@ -1,10 +1,11 @@
 require 'rails_helper'
 
 RSpec.describe QuestionsController, type: :controller do
-  let(:question) { create(:question) }
+  let(:user) { create(:user) }
+  let(:question) { create( :question, title: 'Title', body: 'Body', user_id: user.id )}
 
   describe 'GET #index' do
-    let(:questions) { create_list(:question, 16) }
+    let(:questions) { create_list(:question, 16, title: 'Title', body: 'Body', user_id: user.id) }
 
     before { get :index }
 
@@ -29,7 +30,7 @@ RSpec.describe QuestionsController, type: :controller do
     end
 
     it 'populates an array of answers only for @question' do
-      question2 = create(:question)
+      question2 = create( :question, title: 'Title', body: 'Body', user_id: user.id )
       create_list( :answer, 5, body: 'MyAnswer', question_id: question.id )
       create_list( :answer, 3, body: 'MyAnswer', question_id: question2.id )
       expect(assigns(:answers)).to match_array(Answer.first(5))
@@ -37,6 +38,8 @@ RSpec.describe QuestionsController, type: :controller do
   end
 
   describe 'GET #new' do
+    before { sign_in(user) }
+
     before { get :new }
 
     it 'assigns a new question to @question' do
@@ -49,6 +52,8 @@ RSpec.describe QuestionsController, type: :controller do
   end
 
   describe 'GET #edit' do
+    before { sign_in(user) }
+
     before { get :edit, params: { id: question } }
 
     it 'assigns the requested question to @question' do
@@ -61,6 +66,8 @@ RSpec.describe QuestionsController, type: :controller do
   end
 
   describe 'PATCH #update' do
+    before { sign_in(user) }
+
     context 'with valid attributes' do
       it 'assigns the requested question to @question' do
         patch :update, params: { id: question, question: attributes_for(:question) }
@@ -84,8 +91,8 @@ RSpec.describe QuestionsController, type: :controller do
       before { patch :update, params: { id: question, question: { title: 'new title', body: nil } } }
       it 'doesn\'t change the question' do
         question.reload
-        expect(question.title).to eq 'MyString'
-        expect(question.body).to eq 'MyText'
+        expect(question.title).to eq question.title
+        expect(question.body).to eq question.body
       end
 
       it 're-render edit view' do
@@ -95,6 +102,8 @@ RSpec.describe QuestionsController, type: :controller do
   end
 
   describe 'POST #create' do
+    before { sign_in(user) }
+
     context 'with valid attributes' do
       it 'save new question in database' do
         expect { post :create, params: { question: attributes_for(:question) } }.to change(Question, :count).by(1)
@@ -119,6 +128,8 @@ RSpec.describe QuestionsController, type: :controller do
   end
 
   describe 'DELETE #destroy' do
+    before { sign_in(user) }
+
     it 'delete question' do
       question
       expect { delete :destroy, params: { id: question } }.to change(Question, :count).by(-1)
