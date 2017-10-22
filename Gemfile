@@ -66,3 +66,4 @@ gem 'haml-rails', '~> 0.9'
 gem "twitter-bootstrap-rails"
 gem 'kaminari'
 gem 'bootstrap-kaminari-views'
+gem 'devise'
