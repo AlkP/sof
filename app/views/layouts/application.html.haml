@@ -8,4 +8,9 @@
     = javascript_include_tag 'application', 'data-turbolinks-track': 'reload'
   %body
     = render 'layouts/alert'
+    - if current_user
+      = link_to 'Sign Out', destroy_user_session_path, method: :delete
+    - else
+      = link_to 'Sign In', new_user_session_path
+    %br
     = yield

@@ -3,7 +3,7 @@ require 'rails_helper'
 RSpec.describe AnswersController, type: :controller do
   let(:user) { create(:user) }
   let(:question) { create( :question, title: 'Title', body: 'Body', user_id: user.id )}
-  let(:answer){ create( :answer, body: 'MyAnswer', question_id: question.id ) }
+  let(:answer){ create( :answer, body: 'MyAnswer', question_id: question.id, user_id: user.id ) }
 
   describe 'GET #show' do
     before { get :show, params: { id: answer } }
@@ -18,6 +18,8 @@ RSpec.describe AnswersController, type: :controller do
   end
 
   describe 'GET #new' do
+    before { sign_in(user) }
+
     before { get :new, params: { question_id: question } }
 
     it 'assigns a new answer to @answer' do
@@ -30,6 +32,8 @@ RSpec.describe AnswersController, type: :controller do
   end
 
   describe 'GET #edit' do
+    before { sign_in(user) }
+
     before { get :edit, params: { id: answer } }
 
     it 'assigns the requested answer to @answer' do
@@ -42,6 +46,8 @@ RSpec.describe AnswersController, type: :controller do
   end
 
   describe 'PATCH #update' do
+    before { sign_in(user) }
+
     context ' with valid attributes' do
       before { patch :update, params: { question_id: question, id: answer, answer: { body: "NewAnswer" } } }
 
@@ -74,6 +80,8 @@ RSpec.describe AnswersController, type: :controller do
   end
 
   describe 'POST #create' do
+    before { sign_in(user) }
+
     context 'with valid attributes' do
       it 'save new answer in database' do
         expect { post :create, params: { question_id: question, answer: { body: 'NewAnswer' } } }.to change(question.answers, :count).by(1)
@@ -98,6 +106,8 @@ RSpec.describe AnswersController, type: :controller do
   end
 
   describe 'DELETE #destroy' do
+    before { sign_in(user) }
+
     it 'delete answer' do
       answer
       expect { delete :destroy, params: { id: answer} }.to change(question.answers, :count).by(-1)

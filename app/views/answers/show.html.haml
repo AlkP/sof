@@ -1,0 +1,6 @@
+%h3
+  Answer: '#{@answer.body}'
+
+- if @answer.user == current_user
+  = link_to 'Edit Answer', edit_answer_path(@answer)
+  = link_to 'Destroy Answer', answer_path(@answer), :method => :delete

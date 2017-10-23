@@ -1,8 +1,8 @@
 require 'rails_helper'
 
-feature 'Destroy question', %q{
+feature 'Update question', %q{
         As an authenticated user
-        Be able to create a question
+        Be able to update a question
 } do
 
   given(:user) { create(:user) }
@@ -14,7 +14,9 @@ feature 'Destroy question', %q{
 
     visit question_path(question)
     expect(page).to have_link('Edit Question', href: edit_question_path(question))
+
     click_on 'Edit Question'
+    # save_and_open_page
     expect(page).to have_content "Update '#{question.title}' Question"
   end
 

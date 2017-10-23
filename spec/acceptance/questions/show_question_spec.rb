@@ -1,12 +1,11 @@
 require 'rails_helper'
 
-feature 'Destroy question', %q{
-        As an authenticated user
-        Be able to create a question
+feature 'Show question', %q{
+        Any user
+        Be able to show a question
 } do
 
   given(:user) { create(:user) }
-  given(:user2) { create(:user) }
   given(:question) { create( :question, title: 'Title', body: 'Body', user_id: user.id )}
 
   scenario 'Authenticated user show question' do

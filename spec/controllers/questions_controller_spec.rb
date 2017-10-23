@@ -31,8 +31,8 @@ RSpec.describe QuestionsController, type: :controller do
 
     it 'populates an array of answers only for @question' do
       question2 = create( :question, title: 'Title', body: 'Body', user_id: user.id )
-      create_list( :answer, 5, body: 'MyAnswer', question_id: question.id )
-      create_list( :answer, 3, body: 'MyAnswer', question_id: question2.id )
+      create_list( :answer, 5, body: 'MyAnswer', question_id: question.id, user_id: user.id )
+      create_list( :answer, 3, body: 'MyAnswer', question_id: question2.id, user_id: user.id )
       expect(assigns(:answers)).to match_array(Answer.first(5))
     end
   end

@@ -2,7 +2,7 @@ require 'rails_helper'
 
 feature 'Destroy question', %q{
         As an authenticated user
-        Be able to create a question
+        Be able to destroy a question
 } do
 
   given(:user) { create(:user) }
