@@ -1,8 +1,10 @@
-%h3
+%p
   Question: '#{@question.title}'
+  '#{@question.body}'
 
 - if @question.user == current_user
   = link_to 'Edit Question', edit_question_path(@question)
   = link_to 'Destroy Question', question_path(@question), :method => :delete
 
+= render 'answers/new'
 = render 'answers/index'

@@ -1,14 +1,10 @@
 class AnswersController < ApplicationController
   before_action :authenticate_user!, except: [ :index, :show ]
   before_action :set_answer, only: [:show]
-  before_action :set_question, only: [:new, :create]
+  before_action :set_question, only: [:create]
   before_action :protected_set_answer, only: [:edit, :update, :destroy]
 
   def show
-  end
-
-  def new
-    @answer = @question.answers.new
   end
 
   def edit
@@ -16,8 +12,10 @@ class AnswersController < ApplicationController
 
   def update
     if @answer.update(answer_params)
+      flash[:notice] = 'Your answer successfully updated.'
       redirect_to @answer.question
     else
+      flash[:alert] = 'Your answer not updated.'
       render :edit
     end
   end
@@ -27,10 +25,10 @@ class AnswersController < ApplicationController
     @answer.user = current_user
     if @answer.save
       flash[:notice] = 'Your answer successfully created.'
-      redirect_to @answer.question
     else
-      render :new
+      flash[:alert] = 'Your answer not created.'
     end
+    redirect_to question_path(@answer.question)
   end
 
   def destroy

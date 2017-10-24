@@ -13,6 +13,9 @@ feature 'Show question', %q{
 
     visit question_path(question)
     expect(page).to have_content "Question: '#{question.title}'"
+    expect(page).to have_content "'#{question.body}'"
+    
+    expect(page).to have_content 'New Answer for question'
   end
 
   scenario 'Non-Authenticated user show question' do

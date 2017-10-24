@@ -17,20 +17,6 @@ RSpec.describe AnswersController, type: :controller do
     end
   end
 
-  describe 'GET #new' do
-    before { sign_in(user) }
-
-    before { get :new, params: { question_id: question } }
-
-    it 'assigns a new answer to @answer' do
-      expect(assigns(:answer)).to be_a_new(Answer)
-    end
-
-    it 'render new view' do
-      expect(response).to render_template :new
-    end
-  end
-
   describe 'GET #edit' do
     before { sign_in(user) }
 
@@ -100,7 +86,7 @@ RSpec.describe AnswersController, type: :controller do
 
       it 're-render new view' do
         post :create, params: { question_id: question, answer: { body: nil } }
-        expect(response).to render_template :new
+        expect(subject).to redirect_to question_path(question)
       end
     end
   end
