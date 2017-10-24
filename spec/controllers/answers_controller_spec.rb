@@ -5,18 +5,6 @@ RSpec.describe AnswersController, type: :controller do
   let(:question) { create( :question, title: 'Title', body: 'Body', user_id: user.id )}
   let(:answer){ create( :answer, body: 'MyAnswer', question_id: question.id, user_id: user.id ) }
 
-  describe 'GET #show' do
-    before { get :show, params: { id: answer } }
-
-    it 'assigns the requested answer to @answer' do
-      expect(assigns(:answer)).to eq answer
-    end
-
-    it 'render show view' do
-      expect(response).to render_template :show
-    end
-  end
-
   describe 'GET #edit' do
     before { sign_in(user) }
 
@@ -70,7 +58,7 @@ RSpec.describe AnswersController, type: :controller do
 
     context 'with valid attributes' do
       it 'save new answer in database' do
-        expect { post :create, params: { question_id: question, answer: { body: 'NewAnswer' } } }.to change(question.answers, :count).by(1)
+        expect { post :create, params: { question_id: question, answer: { body: 'NewAnswer' } } }.to change(user.answers, :count).by(1)
       end
 
       it 'redirect to question show view' do
@@ -109,7 +97,12 @@ RSpec.describe AnswersController, type: :controller do
     context 'with not log in user' do
       it 'delete answer' do
         answer
-        expect { delete :destroy, params: { id: answer} }.to_not change(question.answers, :count)
+        expect { delete :destroy, params: { id: answer} }.to_not change(Answer, :count)
+      end
+
+      it 'redirect to show question'do
+        delete :destroy, params: { id: answer}
+        expect(response).to redirect_to new_user_session_path
       end
     end
   end

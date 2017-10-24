@@ -1,2 +1,6 @@
 - @answers.each do |a|
-  = a.body
+  %p
+    = a.body
+    - if author_of?(a)
+      = link_to 'Edit Answer', edit_answer_path(a)
+      = link_to 'Delete Answer', answer_path(a), method: :delete

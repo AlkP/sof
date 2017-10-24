@@ -1,6 +1,0 @@
-%h3
-  Answer: '#{@answer.body}'
-
-- if author_of?(@answer)
-  = link_to 'Edit Answer', edit_answer_path(@answer)
-  = link_to 'Destroy Answer', answer_path(@answer), :method => :delete

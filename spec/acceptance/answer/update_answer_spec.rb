@@ -13,22 +13,26 @@ feature 'Update answer', %q{
   scenario 'Authenticated user update answer' do
     sign_in(user)
 
-    visit answer_path(answer)
+    answer
+    visit question_path(question)
     expect(page).to have_link('Edit Answer', href: edit_answer_path(answer))
     click_on 'Edit Answer'
     fill_in 'Body', with: 'It\'s new body'
     click_on 'Update Answer'
     expect(page).to have_content "Question: '#{answer.question.title}'"
+    expect(page).to have_content 'It\'s new body'
   end
 
   scenario 'Authenticated user update not self question' do
     sign_in(user2)
 
-    visit answer_path(answer)
+    answer
+    visit question_path(question)
     expect(page).to_not have_link('Edit Answer', href: edit_answer_path(answer))
   end
 
   scenario 'Non-Authenticated user update question' do
+    answer
     visit question_path(question)
     expect(page).to_not have_link('Edit Answer', href: edit_answer_path(answer))
   end

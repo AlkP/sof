@@ -1,11 +1,7 @@
 class AnswersController < ApplicationController
   before_action :authenticate_user!, except: [ :index, :show ]
-  before_action :set_answer, only: [:show]
   before_action :set_question, only: [:create]
   before_action :protected_set_answer, only: [:edit, :update, :destroy]
-
-  def show
-  end
 
   def edit
   end
@@ -42,10 +38,6 @@ class AnswersController < ApplicationController
 
   def answer_params
     params.require(:answer).permit(:body)
-  end
-
-  def set_answer
-    @answer = Answer.find(params[:id])
   end
 
   def set_question

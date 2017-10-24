@@ -7,15 +7,15 @@ feature 'Destroy question', %q{
 
   given(:user) { create(:user) }
   given(:user2) { create(:user) }
-  given(:question) { create( :question, title: 'Title', body: 'Body', user_id: user.id )}
+  given(:question) { create( :question, title: 'My question', body: 'Body', user_id: user.id )}
 
   scenario 'Authenticated user destroy question' do
     sign_in(user)
 
     visit question_path(question)
-    expect(page).to have_link('Destroy Question', href: question_path(question))
     click_on 'Destroy Question'
     expect(page).to have_content 'Your question successfully destroyed.'
+    expect(page).to_not have_content 'My question'
   end
 
   scenario 'Authenticated user destroy not self question' do
