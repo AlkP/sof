@@ -92,16 +92,25 @@ RSpec.describe AnswersController, type: :controller do
   end
 
   describe 'DELETE #destroy' do
-    before { sign_in(user) }
-
-    it 'delete answer' do
-      answer
-      expect { delete :destroy, params: { id: answer} }.to change(question.answers, :count).by(-1)
+    context 'with log in user' do
+      before { sign_in(user) }
+  
+      it 'delete answer' do
+        answer
+        expect { delete :destroy, params: { id: answer} }.to change(question.answers, :count).by(-1)
+      end
+  
+      it 'redirect to show question'do
+        delete :destroy, params: { id: answer}
+        expect(response).to redirect_to question_path(question)
+      end
     end
-
-    it 'redirect to show question'do
-      delete :destroy, params: { id: answer}
-      expect(response).to redirect_to question_path(question)
+    
+    context 'with not log in user' do
+      it 'delete answer' do
+        answer
+        expect { delete :destroy, params: { id: answer} }.to_not change(question.answers, :count)
+      end
     end
   end
 end
