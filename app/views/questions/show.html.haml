@@ -1,0 +1,12 @@
+%p
+  Question: '#{@question.title}'
+  '#{@question.body}'
+
+- if current_user&.author_of?(@question)
+  = link_to 'Edit Question', edit_question_path(@question)
+  = link_to 'Destroy Question', question_path(@question), :method => :delete
+
+= render 'answers/index'
+
+- if current_user
+  = render 'answers/new'

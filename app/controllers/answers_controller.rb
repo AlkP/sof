@@ -1,37 +1,49 @@
 class AnswersController < ApplicationController
-  before_action :set_answer, only: [:show, :edit, :update, :destroy]
-  before_action :set_question, only: [:new, :create]
-
-  def show
-  end
-
-  def new
-    @answer = @question.answers.new
-  end
+  before_action :authenticate_user!, except: [ :index, :show ]
+  before_action :set_question, only: [:create]
+  before_action :set_answer, only: [:edit, :update, :destroy]
 
   def edit
+    unless current_user.author_of?(@answer)
+      flash[:alert] = 'It\'s not your answer!'
+      redirect_to @answer.question
+    end
   end
 
   def update
-    if @answer.update(answer_params)
+    if current_user.author_of?(@answer) && @answer.update(answer_params)
+      flash[:notice] = 'Your answer successfully updated.'
       redirect_to @answer.question
     else
+      flash[:alert] = 'Your answer not updated.'
       render :edit
     end
   end
 
   def create
-    @answer = @question.answers.new(answer_params)
-    if @answer.save
-      redirect_to @answer.question
+    unless params[:answer][:body] == ""
+      @answer = @question.answers.new(answer_params)
+      @answer.user_id = current_user.id
+      if current_user.author_of?(@answer) && @answer.save
+        flash[:notice] = 'Your answer successfully created.'
+      else
+        flash[:alert] = 'Your answer not created.'
+      end
     else
-      render :new
+        flash[:alert] = 'Your answer is null!'
     end
+    @answers = @question.answers
+    @answer = @question.answers.new
+    render template: "questions/show"
   end
 
   def destroy
     question = @answer.question
-    @answer.destroy
+    if current_user.author_of?(@answer) && @answer.destroy
+      flash[:notice] = 'Your answer successfully destroyed.'
+    else
+      flash[:alert] = 'It\'s not your answer!'
+    end
     redirect_to question
   end
 
@@ -41,11 +53,11 @@ class AnswersController < ApplicationController
     params.require(:answer).permit(:body)
   end
 
-  def set_answer
-    @answer = Answer.find(params[:id])
-  end
-
   def set_question
     @question = Question.find(params[:question_id])
+  end
+
+  def set_answer
+    @answer = Answer.find(params[:id])
   end
 end

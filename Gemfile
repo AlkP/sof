@@ -55,6 +55,7 @@ end
 group :test do
   gem 'shoulda-matchers', '~> 3.1'
   gem 'rails-controller-testing'
+  gem 'capybara', '~> 2.13'
 end
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
@@ -62,7 +63,9 @@ gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 
 gem 'jquery-rails'
 gem 'haml'
-gem 'haml-rails', '~> 0.9'
+gem 'haml-rails'
 gem "twitter-bootstrap-rails"
 gem 'kaminari'
 gem 'bootstrap-kaminari-views'
+gem 'devise'
+gem 'launchy'

@@ -1,0 +1,6 @@
+%h3
+  New Answer for question
+= form_for [@question, @answer] do |f|
+  = f.label :body
+  = f.text_area :body
+  = f.submit
