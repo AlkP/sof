@@ -17,6 +17,15 @@ feature 'Create answer', %q{
     expect(page).to have_content 'Your answer successfully created.'
   end
 
+  scenario 'Authenticated user creates invalid answer' do
+    sign_in(question.user)
+
+    visit question_path(question)
+    
+    click_on 'Create Answer'
+    expect(page).to have_content 'Your answer not created.'
+  end
+
   scenario 'Non-Authenticated user creates answer' do
     visit question_path(question)
     
