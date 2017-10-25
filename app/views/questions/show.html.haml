@@ -2,7 +2,7 @@
   Question: '#{@question.title}'
   '#{@question.body}'
 
-- if @question.user == current_user
+- if current_user&.author_of?(@question)
   = link_to 'Edit Question', edit_question_path(@question)
   = link_to 'Destroy Question', question_path(@question), :method => :delete
 
