@@ -5,11 +5,10 @@ feature 'Create answer', %q{
         Be able to create a answer
 } do
 
-  given(:user) { create(:user) }
-  given(:question) { create( :question, title: 'Title', body: 'Body', user_id: user.id )}
+  given(:question) { create( :question )}
 
   scenario 'Authenticated user creates answer' do
-    sign_in(user)
+    sign_in(question.user)
 
     visit question_path(question)
     
@@ -20,7 +19,7 @@ feature 'Create answer', %q{
 
   scenario 'Non-Authenticated user creates answer' do
     visit question_path(question)
-
-    expect(page).to have_content 'New Answer for question'
+    
+    expect(page).to_not have_content 'New Answer for question'
   end
 end

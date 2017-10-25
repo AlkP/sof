@@ -6,15 +6,11 @@ feature 'Update answer', %q{
 } do
 
   given(:user) { create(:user) }
-  given(:user2) { create(:user) }
-  given(:question) { create( :question, title: 'Title', body: 'Body', user_id: user.id )}
-  given(:answer) { create( :answer, body: 'Body', question_id: question.id, user_id: user.id )}
+  given(:answer) { create( :answer )}
 
   scenario 'Authenticated user update answer' do
-    sign_in(user)
-
-    answer
-    visit question_path(question)
+    sign_in(answer.user)
+    visit question_path(answer.question)
     expect(page).to have_link('Edit Answer', href: edit_answer_path(answer))
     click_on 'Edit Answer'
     fill_in 'Body', with: 'It\'s new body'
@@ -24,16 +20,13 @@ feature 'Update answer', %q{
   end
 
   scenario 'Authenticated user update not self question' do
-    sign_in(user2)
-
-    answer
-    visit question_path(question)
+    sign_in(user)
+    visit question_path(answer.question)
     expect(page).to_not have_link('Edit Answer', href: edit_answer_path(answer))
   end
 
   scenario 'Non-Authenticated user update question' do
-    answer
-    visit question_path(question)
+    visit question_path(answer.question)
     expect(page).to_not have_link('Edit Answer', href: edit_answer_path(answer))
   end
 end

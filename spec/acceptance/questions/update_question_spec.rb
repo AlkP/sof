@@ -6,23 +6,18 @@ feature 'Update question', %q{
 } do
 
   given(:user) { create(:user) }
-  given(:user2) { create(:user) }
-  given(:question) { create( :question, title: 'Title', body: 'Body', user_id: user.id )}
+  given(:question) { create( :question )}
 
   scenario 'Authenticated user update question' do
-    sign_in(user)
-
+    sign_in(question.user)
     visit question_path(question)
     expect(page).to have_link('Edit Question', href: edit_question_path(question))
-
     click_on 'Edit Question'
-    # save_and_open_page
     expect(page).to have_content "Update '#{question.title}' Question"
   end
 
   scenario 'Authenticated user update not self question' do
-    sign_in(user2)
-
+    sign_in(user)
     visit question_path(question)
     expect(page).to_not have_link('Edit Question', href: edit_question_path(question))
   end

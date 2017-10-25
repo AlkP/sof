@@ -1,7 +1,6 @@
 class QuestionsController < ApplicationController
   before_action :authenticate_user!, except: [ :index, :show ]
-  before_action :set_question, only: [:show]
-  before_action :protected_set_question, only: [:edit, :update, :destroy]
+  before_action :set_question, only: [:show, :edit, :update, :destroy]
 
   def index
     @questions = Question.all.page(params[:page])
@@ -17,6 +16,10 @@ class QuestionsController < ApplicationController
   end
 
   def edit
+    unless current_user.author_of?(@question)
+      flash[alert] = 'It\'s not your question!'
+      redirect_to question_path(@question)
+    end
   end
 
   def create
@@ -30,7 +33,7 @@ class QuestionsController < ApplicationController
   end
 
   def update
-    if @question.update(question_params)
+    if current_user.author_of?(@question) && @question.update(question_params)
       redirect_to @question
     else
       render :edit
@@ -38,8 +41,11 @@ class QuestionsController < ApplicationController
   end
 
   def destroy
-    @question.destroy
-    flash[:notice] = 'Your question successfully destroyed.'
+    if current_user.author_of?(@question) && @question.destroy
+      flash[:notice] = 'Your question successfully destroyed.'
+    else
+      flash[:alert] = 'It\'s not your question!'
+    end
     redirect_to questions_path
   end
 
@@ -51,9 +57,5 @@ class QuestionsController < ApplicationController
 
   def set_question
     @question = Question.find(params[:id])
-  end
-
-  def protected_set_question
-    @question = current_user.questions.find(params[:id])
   end
 end

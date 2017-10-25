@@ -10,6 +10,7 @@ FactoryGirl.define do
   factory :question do
     title
     body
+    user
   end
 
   factory :question_invalid, class: Question do

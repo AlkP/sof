@@ -1,11 +1,10 @@
 require 'rails_helper'
 
 RSpec.describe QuestionsController, type: :controller do
-  let(:user) { create(:user) }
-  let(:question) { create( :question, title: 'Title', body: 'Body', user_id: user.id )}
+  let(:question) { create( :question )}
 
   describe 'GET #index' do
-    let(:questions) { create_list(:question, 16, title: 'Title', body: 'Body', user_id: user.id) }
+    let(:questions) { create_list( :question, 16 ) }
 
     before { get :index }
 
@@ -19,8 +18,10 @@ RSpec.describe QuestionsController, type: :controller do
   end
 
   describe 'GET #show' do
+    let(:answers1) { create_list( :answer, 5, body: 'MyAnswer', question_id: question.id, user_id: question.user.id ) }
+    let(:answer) { create( :answer )}
     before { get :show, params: { id: question } }
-
+    
     it 'assigns the requested question to @question' do
       expect(assigns(:question)).to eq question
       expect(assigns(:answer)).to be_a_new(Answer)
@@ -31,15 +32,12 @@ RSpec.describe QuestionsController, type: :controller do
     end
 
     it 'populates an array of answers only for @question' do
-      question2 = create( :question, title: 'Title', body: 'Body', user_id: user.id )
-      create_list( :answer, 5, body: 'MyAnswer', question_id: question.id, user_id: user.id )
-      create_list( :answer, 3, body: 'MyAnswer', question_id: question2.id, user_id: user.id )
-      expect(assigns(:answers)).to match_array(Answer.first(5))
+      expect(assigns(:answers)).to match_array(answers1)
     end
   end
 
   describe 'GET #new' do
-    before { sign_in(user) }
+    before { sign_in(question.user) }
 
     before { get :new }
 
@@ -53,7 +51,7 @@ RSpec.describe QuestionsController, type: :controller do
   end
 
   describe 'GET #edit' do
-    before { sign_in(user) }
+    before { sign_in(question.user) }
 
     before { get :edit, params: { id: question } }
 
@@ -67,7 +65,7 @@ RSpec.describe QuestionsController, type: :controller do
   end
 
   describe 'PATCH #update' do
-    before { sign_in(user) }
+    before { sign_in(question.user) }
 
     context 'with valid attributes' do
       it 'assigns the requested question to @question' do
@@ -103,11 +101,11 @@ RSpec.describe QuestionsController, type: :controller do
   end
 
   describe 'POST #create' do
-    before { sign_in(user) }
+    before { sign_in(question.user) }
 
     context 'with valid attributes' do
       it 'save new question in database' do
-        expect { post :create, params: { question: attributes_for(:question) } }.to change(user.questions, :count).by(1)
+        expect { post :create, params: { question: attributes_for(:question) } }.to change(question.user.questions, :count).by(1)
       end
 
       it 'redirect to show view' do
@@ -130,11 +128,27 @@ RSpec.describe QuestionsController, type: :controller do
 
   describe 'DELETE #destroy' do
     context 'with sign in user' do
+      before { sign_in(question.user) }
+
+      it 'delete question' do
+        question
+        expect { delete :destroy, params: { id: question } }.to change(question.user.questions, :count).by(-1)
+      end
+
+      it 'redirect to index view' do
+        delete :destroy, params: { id: question }
+        expect(response).to redirect_to questions_path
+      end
+    end
+    
+    context 'with sign in oter user' do
+      let(:user){ create( :user ) }
+      
       before { sign_in(user) }
 
       it 'delete question' do
         question
-        expect { delete :destroy, params: { id: question } }.to change(user.questions, :count).by(-1)
+        expect { delete :destroy, params: { id: question } }.to_not change(Question, :count)
       end
 
       it 'redirect to index view' do

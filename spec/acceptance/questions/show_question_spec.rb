@@ -5,22 +5,19 @@ feature 'Show question', %q{
         Be able to show a question
 } do
 
-  given(:user) { create(:user) }
-  given(:question) { create( :question, title: 'Title', body: 'Body', user_id: user.id )}
+  given(:question) { create( :question )}
 
   scenario 'Authenticated user show question' do
-    sign_in(user)
+    sign_in(question.user)
 
     visit question_path(question)
     expect(page).to have_content "Question: '#{question.title}'"
     expect(page).to have_content "'#{question.body}'"
-    
     expect(page).to have_content 'New Answer for question'
   end
 
   scenario 'Non-Authenticated user show question' do
-    sign_in(user)
-
+    sign_in(question.user)
     visit question_path(question)
     expect(page).to have_content "Question: '#{question.title}'"
   end
