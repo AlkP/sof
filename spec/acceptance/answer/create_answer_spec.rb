@@ -9,7 +9,6 @@ feature 'Create answer', %q{
 
   scenario 'Authenticated user creates answer' do
     sign_in(question.user)
-
     visit question_path(question)
     
     fill_in 'Body', with: 'It\'s my answer'
@@ -22,8 +21,9 @@ feature 'Create answer', %q{
 
     visit question_path(question)
     
+    fill_in 'Body', with: nil
     click_on 'Create Answer'
-    expect(page).to have_content 'Your answer not created.'
+    expect(page).to have_content 'Your answer is null!'
   end
 
   scenario 'Non-Authenticated user creates answer' do

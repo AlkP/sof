@@ -61,7 +61,7 @@ RSpec.describe AnswersController, type: :controller do
 
       it 'redirect to question show view' do
         post :create, params: { question_id: answer.question, answer: { body: 'NewAnswer' } }
-        expect(response).to redirect_to question_path(answer.question)
+        expect(response).to render_template 'questions/show'
       end
     end
 
@@ -72,7 +72,7 @@ RSpec.describe AnswersController, type: :controller do
 
       it 're-render new view' do
         post :create, params: { question_id: answer.question, answer: { body: nil } }
-        expect(subject).to redirect_to question_path(answer.question)
+        expect(subject).to render_template 'questions/show'
       end
     end
   end

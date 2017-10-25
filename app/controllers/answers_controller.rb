@@ -21,14 +21,20 @@ class AnswersController < ApplicationController
   end
 
   def create
-    @answer = @question.answers.new(answer_params)
-    @answer.user_id = current_user.id
-    if @answer.save
-      flash[:notice] = 'Your answer successfully created.'
+    unless params[:answer][:body] == ""
+      @answer = @question.answers.new(answer_params)
+      @answer.user_id = current_user.id
+      if current_user.author_of?(@answer) && @answer.save
+        flash[:notice] = 'Your answer successfully created.'
+      else
+        flash[:alert] = 'Your answer not created.'
+      end
     else
-      flash[:alert] = 'Your answer not created.'
+        flash[:alert] = 'Your answer is null!'
     end
-    redirect_to question_path(@answer.question)
+    @answers = @question.answers
+    @answer = @question.answers.new
+    render template: "questions/show"
   end
 
   def destroy
