@@ -40,7 +40,7 @@ group :development, :test do
   gem 'capybara', '~> 2.13'
   gem 'selenium-webdriver'
   gem 'rspec-rails'
-  gem 'factory_girl_rails', "~> 4.0"
+  gem 'factory_girl_rails'
 end
 
 group :development do
@@ -53,7 +53,7 @@ group :development do
 end
 
 group :test do
-  gem 'shoulda-matchers', '~> 3.1'
+  gem 'shoulda-matchers'
   gem 'rails-controller-testing'
 end
 
@@ -62,7 +62,7 @@ gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 
 gem 'jquery-rails'
 gem 'haml'
-gem 'haml-rails', '~> 0.9'
+gem 'haml-rails'
 gem "twitter-bootstrap-rails"
 gem 'kaminari'
 gem 'bootstrap-kaminari-views'
