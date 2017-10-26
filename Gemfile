@@ -41,6 +41,7 @@ group :development, :test do
   gem 'selenium-webdriver'
   gem 'rspec-rails'
   gem 'factory_girl_rails'
+  gem 'launchy'
 end
 
 group :development do
@@ -66,3 +67,4 @@ gem 'haml-rails'
 gem "twitter-bootstrap-rails"
 gem 'kaminari'
 gem 'bootstrap-kaminari-views'
+gem 'devise'

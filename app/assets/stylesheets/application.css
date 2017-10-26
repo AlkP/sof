@@ -13,3 +13,8 @@
  *= require_tree .
  *= require_self
  */
+.main-frame {
+    width: 100%;
+    margin-top: 60px;
+    float: left;
+}

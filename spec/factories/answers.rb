@@ -1,5 +1,7 @@
 FactoryGirl.define do
   factory :answer do
-    body "MyString"
+    sequence(:body) { |n| "MyAnswer ##{n}" }
+    question
+    user
   end
 end

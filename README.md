@@ -1,24 +1,13 @@
-# README
+# Test StackOverFlow
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+ruby 2.3.3
 
-Things you may want to cover:
+rails 5.1.4
 
-* Ruby version
+#
 
-* System dependencies
+If you use Windows, add in your Gemfile:
 
-* Configuration
+gem 'wdm', '>= 0.1.0'
 
-* Database creation
-
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+gem 'bcrypt-ruby', '3.1.1.rc1', :require => 'bcrypt'
