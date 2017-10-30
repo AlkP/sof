@@ -24,7 +24,8 @@ class QuestionsController < ApplicationController
     if @question.save
       redirect_to @question, notice: 'Question was successfully created.'
     else
-      render :new, alert: 'Question was not created.'
+      flash[:alert] = 'Question was not created.'
+      render :new
     end
   end
 

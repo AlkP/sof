@@ -9,6 +9,8 @@ RSpec.describe QuestionsController, type: :controller do
     If he wants see a question
     or in order to be able see a list question
     But He should be forbidden access to everything else
+
+    Also he sees list answers for question
   } do
     describe 'GET #index' do
       let(:questions) { create_list(:question, 25) }
@@ -24,6 +26,8 @@ RSpec.describe QuestionsController, type: :controller do
     end
 
     describe 'GET #show' do
+      before { create_list(:answer, 4, question: question) }
+      before { create_list(:answer, 3) }
       before { get :show, params: { id: question } }
 
       it 'assigns the requested question to @question' do
@@ -36,6 +40,10 @@ RSpec.describe QuestionsController, type: :controller do
 
       it 'render show view' do
         expect(response).to render_template :show
+      end
+
+      it 'populates an array of all answers' do
+        expect(question.answers).to match_array(Answer.all.first(4))
       end
     end
 
@@ -53,7 +61,7 @@ RSpec.describe QuestionsController, type: :controller do
           expect { post :create, params: { question: attributes_for(:question) } }.to_not change(Question, :count)
         end
 
-        it 'redirect to show view' do
+        it 'redirect to log in' do
           post :create, params: { question: attributes_for(:question) }
           expect(response).to redirect_to new_user_session_path
         end
@@ -64,7 +72,7 @@ RSpec.describe QuestionsController, type: :controller do
           expect { post :create, params: { question: attributes_for(:question) } }.to_not change(Question, :count)
         end
 
-        it 'redirect to show view' do
+        it 'redirect to log in' do
           post :create, params: { question: attributes_for(:question) }
           expect(response).to redirect_to new_user_session_path
         end
