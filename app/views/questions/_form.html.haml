@@ -1,0 +1,22 @@
+
+= form_for @question, html: { class: 'form-horizontal', role: 'form' } do |f|
+
+  %div.form-group
+    %label.col-sm-4
+    %div.col-sm-8
+      = render 'questions/errors'
+
+  %div.form-group
+    %label.col-sm-4.control-label.some{ for: 'question_title' }
+      = :title
+    %div.col-sm-8
+      = f.text_field :title, autofocus: true, :class => "form-control", :id => "question_title", :type => "groupname"
+  %div.form-group
+    %label.col-sm-4.control-label.some{ for: 'question_body' }
+      = :body
+    %div.col-sm-8
+      = f.text_area :body, :class => "form-control", :id => "question_body", :type => "groupname"
+  %div.form-group
+    %label.col-sm-4
+    %div.col-sm-8
+      = f.submit

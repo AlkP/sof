@@ -1,0 +1,14 @@
+= form_for [@question, @answer], html: { class: 'form-horizontal', role: 'form' } do |a|
+  %div.form-group
+    %label.col-sm-4
+    %div.col-sm-8
+  = render 'answers/errors'
+  %div.form-group
+    %label.col-sm-4.control-label.some{ for: 'answer_body' }
+      = :body
+    %div.col-sm-8
+      = a.text_area :body, :class => "form-control", :id => "answer_body", :type => "groupname"
+  %div.form-group
+    %label.col-sm-4
+    %div.col-sm-8
+      = a.submit

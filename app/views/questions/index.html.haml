@@ -1,0 +1,12 @@
+
+- if user_signed_in?
+  = link_to :'New Question', new_question_path
+
+%table.table.table-striped
+  %thead
+    %tr
+      %th
+  %tbody
+    = render @questions
+
+= paginate @questions, theme: 'twitter-bootstrap-3', pagination_class: 'pagination-sm'
