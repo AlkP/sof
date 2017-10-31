@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-feature 'User sees list questions' do
+feature 'User edit question' do
   given!(:question) { create(:question) }
   before { sign_in(question.user) }
   before { visit edit_question_path(question) }

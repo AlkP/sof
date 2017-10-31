@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-feature 'User sees list questions' do
+feature 'User show question' do
   given!(:user) { create(:user) }
   given!(:question) { create(:question) }
   given!(:question2) { create(:question) }

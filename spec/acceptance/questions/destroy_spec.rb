@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-feature 'User sees list questions' do
+feature 'User destroy question' do
   given(:user) { create(:user) }
   given!(:question) { create(:question) }
 
