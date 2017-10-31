@@ -5,8 +5,9 @@ class AnswersController < ApplicationController
 
   def update
     if @answer.update(answer_params)
-      redirect_to @answer.question
+      redirect_to @answer.question, notice: 'Answer was successfully updated.'
     else
+      flash[:alert] = 'Answer was not updated.'
       render :edit
     end
   end
