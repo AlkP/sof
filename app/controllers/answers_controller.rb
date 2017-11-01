@@ -13,9 +13,7 @@ class AnswersController < ApplicationController
   end
 
   def create
-    @answer = Answer.new(answer_params)
-    @answer.user_id = current_user.id
-    @answer.question_id = params[:question_id]
+    @answer = current_user.answers.build(answer_params.merge(question_id))
     if @answer.save
       redirect_to @answer.question, notice: 'Answer was successfully created.'
     else
@@ -36,6 +34,10 @@ class AnswersController < ApplicationController
 
   def answer_params
     params.require(:answer).permit(:body)
+  end
+
+  def question_id
+    params.permit(:question_id)
   end
 
   def set_answer
