@@ -1,0 +1,13 @@
+%tr
+  %td
+    = answer.body
+  %td
+    - if current_user&.author_of?(answer)
+      = link_to 'edit',
+          edit_answer_path(answer)
+  %td
+    - if current_user&.author_of?(answer)
+      = link_to 'del',
+          answer_path(answer),
+          :method => :delete,
+          :data => { :confirm => 'Are you sure?' }
