@@ -1,4 +1,6 @@
-= form_for [question, answer], html: { class: 'form-horizontal', role: 'form' }, remote: true do |a|
+-#= render 'answers/form', question: @answer.question, answer: @answer
+
+= form_for answer, html: { class: 'form-horizontal', role: 'form' }, remote: true do |a|
   %div.form-group
     %label.col-sm-4
     %div.col-sm-8

@@ -1,13 +1,12 @@
 class AnswersController < ApplicationController
+  protect_from_forgery except: :edit
+
   before_action :authenticate_user!
   before_action :set_answer, except: [ :create ]
   before_action :check_access, except: [ :create ]
 
   def update
-    if @answer.update(answer_params)
-      redirect_to @answer.question, notice: 'Answer was successfully updated.'
-    else
-      flash[:alert] = 'Answer was not updated.'
+    unless @answer.update(answer_params)
       render :edit
     end
   end
@@ -15,10 +14,13 @@ class AnswersController < ApplicationController
   def create
     @answer = current_user.answers.build(answer_params.merge(question_id))
     if @answer.save
-      redirect_to @answer.question, notice: 'Answer was successfully created.'
+      @answer_new = Answer.new
     else
-      redirect_to @answer.question, alert: 'Answer was not created.'
+      @answer_new = @answer
     end
+  end
+
+  def edit
   end
 
   def destroy

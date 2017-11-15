@@ -1,0 +1,2 @@
+$('.answers').html("<%= escape_javascript render 'answers/index', answers: @answer.question.answers %>")
+$('.new-answer').html("<%= escape_javascript render 'answers/new', question: @answer.question, answer: @answer_new %>")

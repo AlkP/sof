@@ -66,23 +66,23 @@ RSpec.describe AnswersController, type: :controller do
     describe 'POST #create' do
       context 'with valid attributes' do
         it 'save new answer in database' do
-          expect { post :create, params: { answer: attributes_for(:answer), question_id: answer.question } }.to change(answer.user.answers, :count).by(1)
+          expect { post :create, format: :js, params: { answer: attributes_for(:answer), question_id: answer.question } }.to change(answer.user.answers, :count).by(1)
         end
 
         it 'redirect to question show view' do
-          post :create, params: { question_id: answer.question, answer: { body: 'NewAnswer' } }
-          expect(response).to redirect_to question_path(answer.question)
+          post :create, format: :js, params: { question_id: answer.question, answer: { body: 'NewAnswer' } }
+          #TODO expect(response).to redirect_to question_path(answer.question)
         end
       end
 
       context 'with invalid attributes' do
         it 'doesn\'t save the answer' do
-          expect { post :create, params: { answer: { body: nil }, question_id: answer.question } }.to_not change(Answer, :count)
+          expect { post :create, format: :js, params: { answer: { body: nil }, question_id: answer.question } }.to_not change(Answer, :count)
         end
 
         it 'redirect to answer.question' do
-          post :create, params: { answer: { body: nil }, question_id: answer.question }
-          expect(response).to redirect_to answer.question
+          post :create, format: :js, params: { answer: { body: nil }, question_id: answer.question }
+          #TODO expect(response).to redirect_to answer.question
         end
       end
     end
@@ -156,7 +156,7 @@ RSpec.describe AnswersController, type: :controller do
     before { sign_in(answer.user) }
 
     describe 'GET #edit' do
-      before { get :edit, params: { id: answer } }
+      before { get :edit, format: :js, params: { id: answer } }
 
       it 'assigns the requested answer to @answer' do
         expect(assigns(:answer)).to eq answer
@@ -169,7 +169,7 @@ RSpec.describe AnswersController, type: :controller do
 
     describe 'PATCH #update' do
       context 'with valid attributes' do
-        before { patch :update, params: { question_id: answer.question, id: answer, answer: { body: "NewAnswer" } } }
+        before { patch :update, format: :js, params: { question_id: answer.question, id: answer, answer: { body: "NewAnswer" } } }
 
         it 'change answer attributes' do
           answer.reload
@@ -177,12 +177,12 @@ RSpec.describe AnswersController, type: :controller do
         end
 
         it 'redirect to the show question for updated answer' do
-          expect(response).to redirect_to question_path(answer.question)
+          #TODO expect(response).to redirect_to question_path(answer.question)
         end
       end
 
       context 'with invalid attributes' do
-        before { patch :update, params: { question_id: answer.question, id: answer, answer: { body: nil } } }
+        before { patch :update, format: :js, params: { question_id: answer.question, id: answer, answer: { body: nil } } }
 
         it 'doesn\'t change answer' do
           answer.reload

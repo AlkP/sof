@@ -12,7 +12,9 @@
 %p
   = @question.body
 
-= render 'answers/index', answers: @question.answers
+%div.answers
+  = render 'answers/index', answers: @question.answers
 
 - if user_signed_in?
-  = render 'answers/new'
+  %div.new-answer
+    = render 'answers/new', question: @question, answer: @question.answers.new
